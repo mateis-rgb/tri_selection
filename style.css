@@ -5,3 +5,19 @@
 * {
 	font-family: 'Poppins', sans-serif;
 }
+
+#app {
+	background: #344966;
+}
+
+#card {
+	background: #b4cded;
+}
+
+#blue {
+	color: #0d1821;
+}
+
+#green {
+	color: #14591d;
+}

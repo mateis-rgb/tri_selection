@@ -4,18 +4,87 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title id="title"></title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
         <div id="app">
+            <!-- input
+                bouton
+                zone de titre
+            -->
             <v-app>
                 <v-main>
-                    <v-container>
-                        Hello World !! <br>
-                        <v-btn color="#222" dark @click="nom_fonction()">toto sombre</v-btn>
-                        <v-btn color="#ccc" light>toto clair</v-btn> <br>
-                        <v-icon>mdi-cog</v-icon>
+                    <v-container style="max-width: 500px">
+                        <v-card class="pa-7 ma-4" id="card">
+                            <v-card-title>
+                                Tri par selection d'entiers
+                            </v-card-title>
+
+                            <v-divider></v-divider>
+                            
+                            <v-text-field type="number" class="pt-3" v-model="newTask" label="Entrez les éléments de votre liste un par un." solo @keydown.enter="create">
+                                <template v-slot:append>
+                                    <v-fade-transition>
+                                        <v-icon v-if="newTask" @click="create">
+                                            mdi-plus-circle
+                                        </v-icon>
+                                    </v-fade-transition>
+                                </template>
+                            </v-text-field>
+                            
+                            <h2 class="text-h4 pl-4">
+                                <v-btn text x-large @click="tri_selection(this.tasks)">Trier</v-btn>
+                            </h2>
+                            
+                            <v-divider class="mt-4"></v-divider>
+                            
+                            <v-row class="my-1" align="center">
+                                <strong class="mx-4 text--darken-2" id="blue">
+                                    En attente : {{ remainingTasks }}
+                                </strong>
+                            
+                                <v-divider vertical></v-divider>
+                            
+                                <strong class="mx-4 text--darken-2" id="green">
+                                    Éléments triés : {{ completedTasks }}
+                                </strong>
+                            
+                                <v-spacer></v-spacer>
+                            
+                                <v-progress-circular :value="progress" class="mr-2" id="green"></v-progress-circular>
+                            </v-row>
+                            
+                            <v-divider class="mb-4"></v-divider>
+                            
+                            <v-card v-if="tasks.length > 0">
+                                <v-slide-y-transition class="py-0" group tag="v-list">
+                                    <template v-for="(task, i) in tasks">
+                                        <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
+                            
+                                        <v-list-item :key="`${i}-${task.text}`">
+                                            <v-list-item-action>
+                                                <div :class="task.done && 'grey--text' || 'primary--text'" class="ml-4" v-text="task.text"></div>
+                                                <!-- <v-checkbox v-model="task.done" :color="task.done && 'grey' || 'primary'">
+                                                    <template v-slot:label>
+                                                    </template>
+                                                </v-checkbox> -->
+                                            </v-list-item-action>
+                            
+                                            <v-spacer></v-spacer>
+                            
+                                            <v-scroll-x-transition>
+                                                <v-icon v-if="task.done" color="success">
+                                                    mdi-check
+                                                </v-icon>
+                                            </v-scroll-x-transition>
+                                        </v-list-item>
+                                    </template>
+                                </v-slide-y-transition>
+                            </v-card>
+                        </v-card>
+                        <v-btn v-scroll="onScroll" v-show="fab" fab dark fixed bottom right color="primary" @click="toTop">
+                            <v-icon>mdi-arrow-up</v-icon>
+                        </v-btn>
                     </v-container>
                 </v-main>
             </v-app>
