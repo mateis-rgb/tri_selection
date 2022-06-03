@@ -8,21 +8,17 @@
     </head>
     <body>
         <div id="app">
-            <!-- input
-                bouton
-                zone de titre
-            -->
             <v-app>
                 <v-main>
                     <v-container style="max-width: 500px">
-                        <v-card class="pa-7 ma-4" id="card">
+                        <v-card class="pa-7 ma-4" id="card" elevation="24">
                             <v-card-title>
                                 Tri par selection d'entiers
                             </v-card-title>
 
                             <v-divider></v-divider>
                             
-                            <v-text-field type="number" class="pt-3" v-model="newTask" label="Entrez les éléments de votre liste un par un." solo @keydown.enter="create">
+                            <v-text-field type="number" class="pt-3" v-model="newTask" label="Entrez les éléments de votre liste" solo @keydown.enter="create">
                                 <template v-slot:append>
                                     <v-fade-transition>
                                         <v-icon v-if="newTask" @click="create">
@@ -31,11 +27,16 @@
                                     </v-fade-transition>
                                 </template>
                             </v-text-field>
-                            
-                            <h2 class="text-h4 pl-4">
-                                <v-btn text x-large @click="tri_selection(this.tasks)">Trier</v-btn>
-                            </h2>
-                            
+                                                        
+                            <v-row>
+                                <v-col>
+                                    <v-btn x-large text :disabled="!this.tasks.length" @click="tri_selection(this.tasks)">Trier</v-btn>
+                                </v-col>
+                                <v-col>
+                                    <v-btn x-large text :disabled="!this.tasks.length" @click="clearAll">Réinitialiser</v-btn>
+                                </v-col>
+                            </v-row>
+
                             <v-divider class="mt-4"></v-divider>
                             
                             <v-row class="my-1" align="center">
@@ -64,10 +65,6 @@
                                         <v-list-item :key="`${i}-${task.text}`">
                                             <v-list-item-action>
                                                 <div :class="task.done && 'grey--text' || 'primary--text'" class="ml-4" v-text="task.text"></div>
-                                                <!-- <v-checkbox v-model="task.done" :color="task.done && 'grey' || 'primary'">
-                                                    <template v-slot:label>
-                                                    </template>
-                                                </v-checkbox> -->
                                             </v-list-item-action>
                             
                                             <v-spacer></v-spacer>
@@ -77,6 +74,10 @@
                                                     mdi-check
                                                 </v-icon>
                                             </v-scroll-x-transition>
+
+                                            <v-icon v-if="!task.done" @click="clearOnes(task)">
+                                                mdi-close-circle
+                                            </v-icon>
                                         </v-list-item>
                                     </template>
                                 </v-slide-y-transition>
@@ -87,12 +88,16 @@
                         </v-btn>
                     </v-container>
                 </v-main>
+                <v-footer padless id="card">
+                    <v-col class="text-center" cols="12">
+                        Claire C. Noé M. Matéis R. - Fait avec <strong>Vuetify@2.6.6</strong> et <strong>VueJS@2.6.14</strong> - {{ new Date().getFullYear() }}
+                    </v-col>
+                  </v-footer>
             </v-app>
         </div>
 
         <script src="./vue.js"></script>
         <script src="./vuetify.js"></script>
-        <script src="./cmain.js"></script>
-        <!-- <script src="./main.js"></script> -->
+        <script src="./main.js"></script>
     </body>
 </html>
